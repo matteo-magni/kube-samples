@@ -1,0 +1,15 @@
+-----BEGIN CERTIFICATE-----
+
+leaf certificate
+
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+
+intermediate CA certificate
+
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+
+root CA certificate
+
+-----END CERTIFICATE-----

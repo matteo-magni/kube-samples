@@ -1,0 +1,65 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nginx-kust-passthrough
+
+resources:
+  - namespace.yaml
+  - app.yaml
+  - ingress.yaml
+
+images:
+  - name: nginxinc/nginx-unprivileged
+    newName: registry.my.domain/docker-hub-proxy/nginxinc/nginx-unprivileged
+    newTag: 1.25.4
+
+configMapGenerator:
+  - name: nginx-conf
+    options:
+      disableNameSuffixHash: true
+    files:
+      - files/default.conf
+
+secretGenerator:
+  - name: the-tls-secret
+    options:
+      disableNameSuffixHash: true
+    files:
+      - files/tls.crt
+      - files/tls.key
+    type: kubernetes.io/tls
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nginx
+      spec:
+        template:
+          spec:
+            containers:
+            - name: nginx
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                runAsUser: 1000
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+              - mountPath: /etc/nginx/conf.d/default.conf
+                name: nginx-conf
+                subPath: default.conf
+              - mountPath: /etc/nginx/ssl/
+                name: tls
+                readOnly: true
+            volumes:
+              - name: nginx-conf
+                configMap:
+                  name: nginx-conf
+              - name: tls
+                secret:
+                  secretName: the-tls-secret

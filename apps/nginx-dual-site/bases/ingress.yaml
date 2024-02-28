@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  labels:
+    gslb: enabled
+  annotations:
+    ako.vmware.com/enable-tls: "true"
+spec:
+  ingressClassName: avi-lb
+  rules:
+  - host: nginx.my.domain
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx
+            port:
+              name: http
+        path: /
+        pathType: Prefix

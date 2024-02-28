@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  labels:
+    gslb: enabled
+  annotations:
+    passthrough.ako.vmware.com/enabled: "true"
+spec:
+  ingressClassName: avi-lb
+  rules:
+  - host: nginx.my.domain
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - nginx.my.domain
+    secretName: the-tls-secret
+---
+apiVersion: ako.vmware.com/v1beta1
+kind: HostRule
+metadata:
+  name: nginx
+spec:
+  virtualhost:
+    enableVirtualHost: true
+    fqdn: nginx.my.domain
+    fqdnType: Exact
+    aliases:
+      - asd.another.domain
+    httpPolicy:
+      policySets:
+      - EMERGENCY
+      - nginx.my.domain
+---
+apiVersion: ako.vmware.com/v1beta1
+kind: HTTPRule
+metadata:
+  name: the-httprule
+spec:
+  fqdn: nginx.my.domain
+  paths:
+  - target: /
+    tls:
+      type: reencrypt
+      destinationCA:  |-
+        -----BEGIN CERTIFICATE-----
+
+        intermediate CA certificate
+
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+
+        root CA certificate
+
+        -----END CERTIFICATE-----

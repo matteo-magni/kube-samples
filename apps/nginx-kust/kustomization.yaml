@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nginx-kust
+
+resources:
+  - namespace.yaml
+  - app.yaml
+  - ingress.yaml
+
+images:
+  - name: nginxinc/nginx-unprivileged
+    newName: registry.my.domain/docker-hub-proxy/nginxinc/nginx-unprivileged
+    newTag: 1.25.4
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nginx
+      spec:
+        template:
+          spec:
+            containers:
+            - name: nginx
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                runAsUser: 1000
+                seccompProfile:
+                  type: RuntimeDefault
