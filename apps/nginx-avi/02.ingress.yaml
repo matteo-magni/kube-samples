@@ -2,10 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx
-  labels:
-    gslb: enabled
   annotations:
     ako.vmware.com/enable-tls: "true"
+  namespace: nginx-avi
 spec:
   ingressClassName: avi-lb
   rules:
@@ -24,6 +23,7 @@ apiVersion: ako.vmware.com/v1beta1
 kind: HostRule
 metadata:
   name: nginx
+  namespace: nginx-avi
 spec:
   virtualhost:
     enableVirtualHost: true

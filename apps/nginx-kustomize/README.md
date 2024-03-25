@@ -2,7 +2,7 @@
 
 This Kubernetes app exposes a web service, making use of Kustomize to apply customisations.
 
-The manifests can be simpler, thus more readable, than the [nginx example](../nginx/),
+The manifests can be simpler, thus more readable, than the [nginx-avi example](../nginx-avi/),
 because they can be further customised declaratively via the `kustomization.yaml` file:
 
 - containers' images and tags can be changed, to point to different registries

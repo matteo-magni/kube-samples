@@ -1,4 +1,4 @@
-# Sample nginx app
+# Sample nginx app exposed via AKO
 
 This is a sample Kubernetes app exposing a web service, defined via plain manifest files.
 

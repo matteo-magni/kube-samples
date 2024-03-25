@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
   name: nginx
-  namespace: nginx
+  namespace: nginx-avi
 spec:
   replicas: 2
   selector:
@@ -35,7 +35,7 @@ metadata:
   labels:
     app: nginx
   name: nginx
-  namespace: nginx
+  namespace: nginx-avi
 spec:
   ports:
   - name: http
