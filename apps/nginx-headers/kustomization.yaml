@@ -5,6 +5,7 @@ namespace: nginx-headers
 
 resources:
   - namespace.yaml
+  - psp-role.yaml
   - app.yaml
   - ingress.yaml
 

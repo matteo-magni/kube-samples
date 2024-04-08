@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: nginx
 spec:
-  ingressClassName: avi-lb
   rules:
   - host: nginx.my.domain
     http:
