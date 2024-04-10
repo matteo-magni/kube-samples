@@ -11,6 +11,6 @@ spec:
           service:
             name: nginx
             port:
-              name: https
+              name: http
         path: /
         pathType: Prefix
