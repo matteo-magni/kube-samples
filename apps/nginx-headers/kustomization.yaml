@@ -5,14 +5,14 @@ namespace: nginx-headers
 
 resources:
   - namespace.yaml
-  - psp-role.yaml
+  # - psp-role.yaml
   - app.yaml
   - ingress.yaml
 
-images:
-  - name: nginxinc/nginx-unprivileged
-    newName: registry.my.domain/docker-hub-proxy/nginxinc/nginx-unprivileged
-    newTag: 1.25.4
+# images:
+#   - name: nginxinc/nginx-unprivileged
+#     newName: registry.my.domain/docker-hub-proxy/nginxinc/nginx-unprivileged
+#     newTag: 1.25.4
 
 configMapGenerator:
   - name: nginx-conf
